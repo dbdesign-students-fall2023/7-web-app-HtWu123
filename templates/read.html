@@ -3,18 +3,24 @@
 {% block container %}
 <h2>Read</h2>
 <p>This page shows information pulled from a MongoDB database collection.
-        
+    <div>
+        <form action="{{ url_for('search') }}" method="post">
+        <label for="query">Enter Search Term:</label>
+        <input type="text" id="query" name="query">
+        <input type="submit" value="Search">
+        </form>
+    </div>
     {% for doc in docs %}
     <div>
         <hr class="solid">
+        <p>
+            {{ doc.message }}
+        </p>
         <p class="post">
             Posted by {{doc.name}} at {{ doc.created_at.strftime("%H:%M on %d %B %Y") }}
             </br>
             <a href="{{ url_for('edit',mongoid=doc._id)}}">Edit</a> | <a href="{{ url_for('delete',mongoid=doc._id)}}">Delete</a>
             </br>
-        </p>
-        <p>
-            {{ doc.message }}
         </p>
             
     </div>

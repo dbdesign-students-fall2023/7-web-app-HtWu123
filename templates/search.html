@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block container %}
+<h2>Search Results</h2>
+{% for doc in docs %}
+<div>
+        <p>Here is the search result for {{ doc.message }}.
+        <hr class="solid">
+        <p >
+            {{ doc.message }}
+        </p>
+        <p class="post">
+            Posted by {{doc.name}} at {{ doc.created_at.strftime("%H:%M on %d %B %Y") }}
+            </br>
+            <p class="right">
+
+                <a href="{{ url_for('edit',mongoid=doc._id)}}" style="display:inline-block">Edit</a> | <a href="{{ url_for('delete',mongoid=doc._id)}}" style="display:inline-block">Delete</a>
+            </p>
+            </br>
+        </p>
+            
+    </div>
+    {%endfor%}
+</p>
+{% endblock %}

@@ -1,0 +1,21 @@
+<!-- register.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Online discussion App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    <header>
+      <h1>Online Discussion App</h1>
+    </header>
+    
+<form method="post" action="/register">
+  username: <input type="text" name="username"><br>
+  password: <input type="password" name="password"><br>
+  <input type="submit" value="sign up">
+</form>
+  </body>
+</html>
+
+  
