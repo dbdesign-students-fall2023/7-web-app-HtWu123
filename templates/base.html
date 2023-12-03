@@ -11,7 +11,11 @@
     <div class="container">
       <header>
         <h1>Online Discussion App</h1>
-        <h2>Welcome! </h2>
+        {% if session['username'] %}
+          <h2>Welcome, {{ session['username'] }}!</h2>
+        {% else %}
+          <h2>Welcome!</h2>
+        {% endif %}
         <p>
           <a href="{{ url_for('home')}}">Home</a> |
           <a href="{{ url_for('read')}}">All posts</a> |
