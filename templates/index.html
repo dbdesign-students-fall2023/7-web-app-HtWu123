@@ -2,10 +2,10 @@
 
 {% block container %}
 
-<p>Welcome to the Flask app. This is the home page. Here are a few links to example pages you might find interesting.
+<p>Welcome to our app. This is the home page. Here are a few links to the pages you might find interesting.(*^▽^*)
     <ul>
-        <li><a href="{{ url_for('read')}}">a page that displays information pulled from a MongoDB database collection</a></li>
-        <li><a href="{{ url_for('create')}}">a page with a form you can submit to create a new record in a MongoDB collection</a></li>
+        <li><a href="{{ url_for('read')}}">a page that displays all the topics</a></li>
+        <li><a href="{{ url_for('create')}}">a page with a form you can submit to create a new topic</a></li>
     </ul>
 </p>
 {% endblock %}
