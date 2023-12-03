@@ -85,15 +85,17 @@ def create_post():
     """
     #name = request.form['fname']
     message = request.form['fmessage']
+    
 
 
-    # create a new document with the data the user entered
     doc = {
-        "name": g_username,
-        "message": message, 
-        "created_at": datetime.datetime.utcnow()
+    "name": session['username'],
+    "message": message, 
+    "love": 0,
+    "created_at": datetime.datetime.utcnow()
     }
-    db.exampleapp.insert_one(doc) # insert a new document
+    db.exampleapp.insert_one(doc)
+
 
     return redirect(url_for('read')) # tell the browser to make a request for the /read route
 
@@ -139,13 +141,30 @@ def logout():
 
 
 @app.route('/edit/<mongoid>')
+# def edit(mongoid):
+#     """
+#     Route for GET requests to the edit page.
+#     Displays a form users can fill out to edit an existing record.
+#     """
+    
+#     # global g_username #如果帖子的id和用户名不一致，就不能编辑
+#     # # if doc and doc.get("username") == g.get("username"):
+#     doc = db.exampleapp.find_one({"_id": ObjectId(mongoid)})
+#     # return render_template('edit.html', mongoid=mongoid, doc=doc) # render the edit template
+#     if doc.get("username") == session['username']:
+#         return render_template('edit.html', mongoid=mongoid, doc=doc)
+#     else:
+#         flash('You are not authorized to edit this post.')
+#         return redirect(url_for('read'))
+    
+@app.route('/edit/<mongoid>')
 def edit(mongoid):
-    """
-    Route for GET requests to the edit page.
-    Displays a form users can fill out to edit an existing record.
-    """
     doc = db.exampleapp.find_one({"_id": ObjectId(mongoid)})
-    return render_template('edit.html', mongoid=mongoid, doc=doc) # render the edit template
+    if 'username' in session and doc.get("name") == session['username']:
+        return render_template('edit.html', mongoid=mongoid, doc=doc)
+    else:
+        flash('You are not authorized to edit this post.')
+        return redirect(url_for('read'))
 
 
 @app.route('/edit/<mongoid>', methods=['POST'])
@@ -154,9 +173,10 @@ def edit_post(mongoid):
     Route for POST requests to the edit page.
     Accepts the form submission data for the specified document and updates the document in the database.
     """
+    # global g_username
+    
     name = request.form['fname']
     message = request.form['fmessage']
-
 
     doc = {
         # "_id": ObjectId(mongoid), 
@@ -164,7 +184,10 @@ def edit_post(mongoid):
         "message": message, 
         "created_at": datetime.datetime.utcnow()
     }
-
+    # if name != g_username:
+    #     flash('You can only edit your own message!')
+    #     return redirect(url_for('read'))
+    
     db.exampleapp.update_one(
         {"_id": ObjectId(mongoid)}, # match criteria
         { "$set": doc }
@@ -180,14 +203,24 @@ def search():
         return render_template('search.html', docs=docs)
     return redirect(url_for('read'))
 
+# @app.route('/delete/<mongoid>')
+# def delete(mongoid):
+#     """
+#     Route for GET requests to the delete page.
+#     Deletes the specified record from the database, and then redirects the browser to the read page.
+#     """
+#     db.exampleapp.delete_one({"_id": ObjectId(mongoid)})
+#     return redirect(url_for('read')) # tell the web browser to make a request for the /read route.
 @app.route('/delete/<mongoid>')
 def delete(mongoid):
-    """
-    Route for GET requests to the delete page.
-    Deletes the specified record from the database, and then redirects the browser to the read page.
-    """
-    db.exampleapp.delete_one({"_id": ObjectId(mongoid)})
-    return redirect(url_for('read')) # tell the web browser to make a request for the /read route.
+    doc = db.exampleapp.find_one({"_id": ObjectId(mongoid)})
+    if 'username' in session and doc.get("name") == session['username']:
+        db.exampleapp.delete_one({"_id": ObjectId(mongoid)})
+        return redirect(url_for('read'))
+    else:
+        flash('You are not authorized to delete this post.')
+        return redirect(url_for('read'))
+
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
@@ -207,6 +240,21 @@ def webhook():
     response = make_response('output: {}'.format(pull_output), 200)
     response.mimetype = "text/plain"
     return response
+    
+@app.route('/love/<mongoid>')
+def love(mongoid):
+    doc = db.exampleapp.find_one({"_id": ObjectId(mongoid)})
+    num = doc['love'] + 1
+     
+    docc = { 
+        "love": num 
+    }
+
+    db.exampleapp.update_one(
+        {"_id": ObjectId(mongoid)}, 
+        { "$set": docc }
+    )
+    return redirect(url_for('read')) 
 
 @app.errorhandler(Exception)
 def handle_error(e):
