@@ -163,7 +163,7 @@ def edit(mongoid):
     if 'username' in session and doc.get("name") == session['username']:
         return render_template('edit.html', mongoid=mongoid, doc=doc)
     else:
-        #flash('You are not authorized to edit this post.')
+        flash('You are not authorized to edit this post.')
         return redirect(url_for('read'))
 
 
