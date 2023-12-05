@@ -4,7 +4,7 @@
     <title>Online discussion App</title>
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/style.css') }}"
+      href="{{ url_for('static', filename='css/style.css', _external=False) }}"
     />
   </head>
   <body>
@@ -17,17 +17,17 @@
           <h2>Welcome!</h2>
         {% endif %}
         <p>
-          <a href="{{ url_for('home')}}">Home</a> |
-          <a href="{{ url_for('read')}}">All posts</a> |
-          <a href="{{ url_for('create')}}">Create a post</a> |
-          <a href="{{ url_for('logout') }}">log out</a>
+          <a href="{{ url_for('home', _external=False)}}">Home</a> |
+          <a href="{{ url_for('read', _external=False)}}">All posts</a> |
+          <a href="{{ url_for('create', _external=False)}}">Create a post</a> |
+          <a href="{{ url_for('logout', _external=False) }}">log out</a>
         </p>
       </header>
       <main>{% block container %} {% endblock %}</main>
       <footer>
         <p>
           The source code for this app is
-          <a href="https://github.com/dbdesign-students-fall2023/7-web-app-HtWu123"
+          <a href="https://github.com/dbdesign-students-fall2023/7-web-app-Catherineya.git"
             >available on Github</a
           >.
         </p>

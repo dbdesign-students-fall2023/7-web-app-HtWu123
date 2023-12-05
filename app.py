@@ -16,6 +16,8 @@ g_username=""
 
 # instantiate the app
 app = Flask(__name__)
+#app.config['APPLICATION_ROOT'] = '/~jz5212/7-web-app-Catherineya/flask.cgi'
+
 
 # load credentials and configuration options from .env file
 # if you do not yet have a file named .env, make one based on the template in env.example
@@ -42,7 +44,7 @@ app.secret_key = 'your_secret_key'
 def require_login():
     allowed_routes = ['login', 'register', 'static']
     if not is_logged_in() and request.endpoint not in allowed_routes:
-        return redirect(url_for('login'))
+        return redirect(url_for('login', _external=False))
 
 def is_logged_in():
     return 'username' in session
@@ -97,7 +99,7 @@ def create_post():
     db.exampleapp.insert_one(doc)
 
 
-    return redirect(url_for('read')) # tell the browser to make a request for the /read route
+    return redirect(url_for('read', _external=False)) # tell the browser to make a request for the /read route
 
 
 #login
@@ -111,13 +113,16 @@ def login():
             session['username'] = username  # 记录用户到 session
             global g_username 
             g_username=username
-            return redirect(url_for('read'))
+            return redirect(url_for('read', _external=False))
+
         elif not user:
             flash('User not found')
-            return redirect(url_for('register'))
+            return redirect(url_for('register', _external=False))
+
         else:
             flash('Wrong password')
-            return redirect(url_for('login'))
+            return redirect(url_for('login', _external=False))
+
     else:
         return render_template('login.html')
         
@@ -130,14 +135,15 @@ def register():
         password = request.form['password']
         password_hash = generate_password_hash(password)
         users.insert_one({'username': username, 'password': password_hash})
-        return redirect(url_for('login'))  # 注册后重定向到登录页面
+        return redirect(url_for('login', _external=False))
+  # 注册后重定向到登录页面
     return render_template('register.html')
 
 
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    return redirect(url_for('login'))
+    return redirect(url_for('login', _external=False))
 
 
 @app.route('/edit/<mongoid>')
@@ -164,7 +170,8 @@ def edit(mongoid):
         return render_template('edit.html', mongoid=mongoid, doc=doc)
     else:
         flash('You are not authorized to edit this post.')
-        return redirect(url_for('read'))
+        return redirect(url_for('read', _external=False))
+
 
 
 @app.route('/edit/<mongoid>', methods=['POST'])
@@ -193,7 +200,8 @@ def edit_post(mongoid):
         { "$set": doc }
     )
 
-    return redirect(url_for('read')) # tell the browser to make a request for the /read route
+    return redirect(url_for('read', _external=False))
+ # tell the browser to make a request for the /read route
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
@@ -201,8 +209,7 @@ def search():
         query = request.form['query']
         docs = db.exampleapp.find({"$or": [{"name": {"$regex": query}}, {"message": {"$regex": query}}]}).sort("created_at", -1)
         return render_template('search.html', docs=docs)
-    return redirect(url_for('read'))
-
+    return redirect(url_for('read', _external=False))
 # @app.route('/delete/<mongoid>')
 # def delete(mongoid):
 #     """
@@ -216,10 +223,10 @@ def delete(mongoid):
     doc = db.exampleapp.find_one({"_id": ObjectId(mongoid)})
     if 'username' in session and doc.get("name") == session['username']:
         db.exampleapp.delete_one({"_id": ObjectId(mongoid)})
-        return redirect(url_for('read'))
+        return redirect(url_for('read', _external=False))
     else:
         flash('You are not authorized to delete this post.')
-        return redirect(url_for('read'))
+        return redirect(url_for('read', _external=False))
 
 
 @app.route('/webhook', methods=['POST'])
@@ -254,7 +261,7 @@ def love(mongoid):
         {"_id": ObjectId(mongoid)}, 
         { "$set": docc }
     )
-    return redirect(url_for('read')) 
+    return redirect(url_for('read', _external=False)) 
 
 @app.errorhandler(Exception)
 def handle_error(e):

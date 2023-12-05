@@ -3,14 +3,14 @@
 <html>
   <head>
     <title>Online discussion App</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', _external=False) }}" />
   </head>
   <body>
     <header>
       <h1>Online Discussion App</h1>
     </header>
     
-<form method="post" action="/register">
+<form method="post" action="{{ url_for('register', _external=False) }}">
   username: <input type="text" name="username"><br>
   password: <input type="password" name="password"><br>
   <input type="submit" value="sign up">

@@ -14,7 +14,7 @@
             </br>
             <p class="right">
 
-                <a href="{{ url_for('edit',mongoid=doc._id)}}" style="display:inline-block">Edit</a> | <a href="{{ url_for('delete',mongoid=doc._id)}}" style="display:inline-block">Delete</a>
+                <a href="{{ url_for('edit',mongoid=doc._id, _external=False)}}" style="display:inline-block">Edit</a> | <a href="{{ url_for('delete',mongoid=doc._id)}}" style="display:inline-block">Delete</a>
             </p>
             </br>
         </p>

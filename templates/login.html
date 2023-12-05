@@ -22,7 +22,7 @@
   </div>
 {% endif %}
 {% endwith %}
-    <form method="post" action="/login">
+    <form method="post" action="{{ url_for('login', _external=False) }}">
       <label for="username">Username:</label>
       <input type="text" id="username" name="username"><br>
       <label for="password">Password:</label>

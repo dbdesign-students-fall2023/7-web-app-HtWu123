@@ -4,8 +4,8 @@
 
 <p>Welcome to our app. This is the home page. Here are a few links to the pages you might find interesting.(*^▽^*)
     <ul>
-        <li><a href="{{ url_for('read')}}">a page that displays all the topics</a></li>
-        <li><a href="{{ url_for('create')}}">a page with a form you can submit to create a new topic</a></li>
+        <li><a href="{{ url_for('read', _external=False)}}">a page that displays all the topics</a></li>
+        <li><a href="{{ url_for('create', _external=False)}}">a page with a form you can submit to create a new topic</a></li>
     </ul>
 </p>
 {% endblock %}
