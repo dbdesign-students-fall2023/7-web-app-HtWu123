@@ -30,7 +30,7 @@ A search feature enables users to find specific content within the comment secti
 *Search button to search.*
 
 ## weblink: [online discussion app](https://i6.cims.nyu.edu/~hw2933/7-web-app-HtWu123/flask.cgi)
-
+"The source code for the app" in my webpage is direct link to jz5212's github, since we do this together.
 
 Group Member: 
 jz5212 Catherineya
