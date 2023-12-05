@@ -32,5 +32,8 @@ A search feature enables users to find specific content within the comment secti
 ## weblink: [online discussion app](https://i6.cims.nyu.edu/~hw2933/7-web-app-HtWu123/flask.cgi)
 
 
-Group Member: jz5212 xx2185 hw2933
+Group Member: 
+jz5212 Catherineya
+xx2185 Vivian-Xie
+hw2933 HtWu123
 
